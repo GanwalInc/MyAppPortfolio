@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="SpacerDimension">20dp</dimen>
+    <dimen name="Text.Heading">25dp</dimen>
+    <dimen name="Button.Padding">10dp</dimen>
+    <dimen name="Button.Width">200dp</dimen>
+</resources>

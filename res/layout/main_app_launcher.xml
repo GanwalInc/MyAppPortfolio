@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+    <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="My Nanodegree Apps!"
+                android:id="@+id/textView"
+                android:layout_gravity="center_horizontal" android:textSize="@dimen/Text.Heading"
+                />
+        <Space
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal" android:minHeight="@dimen/SpacerDimension"
+                android:focusable="true"/>
+        <Button
+                android:text="SPOTIFY STREAMER"
+                android:id="@+id/spotifyApp"
+                style="@style/ButtonsAppLauncher"
+                android:onClick="startSpotifyApp"/>
+        <Space
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal" android:minHeight="@dimen/SpacerDimension"
+                android:focusable="true"/>
+        <Button
+                android:text="SCORES APP"
+                android:id="@+id/scoresApp"
+                style="@style/ButtonsAppLauncher"
+                android:onClick="startScoresApp"/>
+        <Space
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal" android:minHeight="@dimen/SpacerDimension"
+                android:focusable="true"/>
+        <Button
+                android:text="LIBRARY APP"
+                android:id="@+id/libraryApp"
+                style="@style/ButtonsAppLauncher"
+                android:onClick="startLibraryApp"/>
+
+        <Space
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal" android:minHeight="@dimen/SpacerDimension"
+                android:focusable="true"/>
+        <Button
+                android:text="BUILD IT BIGGER"
+                android:id="@+id/biggerApp"
+                style="@style/ButtonsAppLauncher"
+                android:onClick="startBiggerApp"/>
+        <Space
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal" android:minHeight="@dimen/SpacerDimension"
+                android:focusable="true"/>
+        <Button
+                android:text="XYZ READER"
+                android:id="@+id/readerApp"
+                style="@style/ButtonsAppLauncher"
+                android:onClick="startReaderApp"/>
+
+        <Space
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal" android:minHeight="@dimen/SpacerDimension"
+                android:focusable="true"/>
+        <Button
+                android:text="CAPSTONE:MY OWN APP"
+                android:id="@+id/capstoneApp"
+                style="@style/ButtonsAppLauncher"
+                android:background="#673AB7"
+                android:onClick="startCapstoneApp"/>
+
+
+    </LinearLayout>
+</LinearLayout>

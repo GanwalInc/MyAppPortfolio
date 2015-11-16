@@ -1,0 +1,1 @@
+This is the IDEA project containing the code for "Project 0 - My App Portfolio".

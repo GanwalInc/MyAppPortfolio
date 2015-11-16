@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="ButtonsAppLauncher" parent="android:Widget.Button">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingLeft">@dimen/Button.Padding</item>
+        <item name="android:paddingRight">@dimen/Button.Padding</item>
+        <item name="android:paddingTop">@dimen/Button.Padding</item>
+        <item name="android:paddingBottom">@dimen/Button.Padding</item>
+        <item name="android:layout_gravity">center_horizontal</item>
+        <item name="android:background">@color/Button.Background</item>
+        <item name="android:width">@dimen/Button.Width</item>
+    </style>
+</resources>
