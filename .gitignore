@@ -2,6 +2,8 @@
 gen
 build
 out
+.idea
+.gradle
 
 # Windows image file caches
 Thumbs.db
