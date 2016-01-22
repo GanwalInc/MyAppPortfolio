@@ -1,4 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">My App Portfolio</string>
+    <string name="page_txt">My Nanodegree Apps!</string>
+    <string name="movie_button">Movie APP</string>
+    <string name="scores_button">SCORES APP</string>
+    <string name="library_button">LIBRARY APP</string>
+    <string name="bigger_button">BUILD IT BIGGER</string>
+    <string name="reader_button">XYZ READER</string>
+    <string name="capstone_button">CAPSTONE:MY OWN APP</string>
 </resources>

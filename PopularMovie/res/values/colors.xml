@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="window_background">#a3d0ff</color>
+    <color name="color_primary">#f6683d</color>
+    <color name="color_primary_dark">#ac4728</color>
+    <color name="text_color_primary">#ffffff</color>
+    <color name="navigation_bar">#f6683d</color>
+    <color name="color_accent">#afb42b</color>
+    <color name="color_black">#000000</color>
+
+
+
+</resources>

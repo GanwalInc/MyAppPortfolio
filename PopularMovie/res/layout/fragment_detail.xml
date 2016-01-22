@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:orientation="vertical">
+    <TextView
+            android:id="@+id/no_movie_selected"
+            style="@style/AppBodyLabelText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/no_movie_selected_txt"/>
+    <TextView
+            android:id="@+id/movie_title"
+            style="@style/AppTitleText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:background="@color/color_accent"/>
+    <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="10dp">
+
+        <ImageView
+                android:id="@+id/poster_image"
+                android:scaleType="centerCrop"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                />
+        <TextView
+                android:id="@+id/user_rating_label"
+                android:text="@string/user_rating_label_txt"
+                style="@style/AppBodyLabelText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:layout_marginLeft="10dp"
+                android:layout_toRightOf="@id/poster_image"/>
+
+        <TextView
+                android:id="@+id/user_rating"
+                style="@style/AppBodyText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:layout_marginLeft="5dp"
+                android:layout_toRightOf="@id/user_rating_label" />
+
+        <TextView
+                android:text="@string/release_date_label_txt"
+                android:id="@+id/release_date_label"
+                style="@style/AppBodyLabelText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/poster_image"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_below="@id/user_rating_label"/>
+        <TextView
+                android:id="@+id/release_date"
+                style="@style/AppBodyText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="5dp"
+                android:layout_toRightOf="@id/release_date_label"
+                android:layout_below="@id/user_rating" />
+
+    </RelativeLayout>
+
+    <TextView
+            android:id="@+id/synopsis"
+            style="@style/AppBodyText"
+            android:padding="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+
+</LinearLayout>

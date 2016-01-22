@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Popular Movies</string>
+    <string name="title_activity_detail">DetailActivity</string>
+    <string name="no_movie_selected_txt">Select Movie from Left to See Details</string>
+    <string name="user_rating_label_txt">User Rating:</string>
+    <string name="release_date_label_txt">Release Date:</string>
+    <string name="title_menu_settings">Settings</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_movie_settings">Movie Settings</string>
+    <string name="pref_sort_order_label">Sort Order</string>
+    <string name="pref_sort_order_summary">Change Sort Order of Movies</string>
+    <string name="dialog_title_list_preference">Movies Sort Order</string>
+    <string name="api_key"></string>
+</resources>

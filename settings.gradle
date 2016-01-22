@@ -1,0 +1,3 @@
+
+rootProject.name = 'MyAppPortfolio'
+include 'PopularMovie'

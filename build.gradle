@@ -26,7 +26,7 @@ buildscript {
 
         defaultConfig {
             applicationId "com.ganwal.myappportfolio"
-            minSdkVersion 19
+            minSdkVersion 17
             targetSdkVersion 21
             versionCode 1
             versionName "1.0"
@@ -45,7 +45,7 @@ buildscript {
                 debuggable true
             }
         }
-        //TODO - Do I need to care about lint errors
+
         lintOptions {
             abortOnError false
         }
@@ -57,9 +57,9 @@ buildscript {
     jcenter()
   }
 
-    dependencies {
-        compile fileTree(dir: 'libs', include: ['*.jar'])
-        compile 'com.android.support:appcompat-v7:21.0.3'
-    }
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile 'com.android.support:appcompat-v7:21.0.3'
+}
 
 

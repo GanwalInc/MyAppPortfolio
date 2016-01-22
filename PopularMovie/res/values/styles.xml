@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowBackground">@color/window_background</item>
+        <item name="actionOverflowMenuStyle">@style/AppOptionsMenu</item>
+    </style>
+
+    <style name="AppBodyLabelText" parent="@android:style/TextAppearance.Medium">
+        <item name="android:textColor">@color/color_black</item>
+        <item name="android:fontFamily">sans-serif-condensed</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="AppTitleText" parent="@android:style/TextAppearance.Large">
+        <item name="android:textColor">@color/color_black</item>
+        <item name="android:fontFamily">sans-serif-condensed</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="AppBodyText" parent="@android:style/TextAppearance.Medium">
+        <item name="android:textColor">@color/color_black</item>
+        <item name="android:fontFamily">sans-serif-condensed</item>
+    </style>
+
+    <style name="AppOptionsMenu" parent="Widget.AppCompat.PopupMenu.Overflow">
+        <item name="android:popupBackground">@color/window_background</item>
+    </style>
+
+
+</resources>
