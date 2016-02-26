@@ -12,7 +12,7 @@ import android.view.MenuItem;
 
 
 /**
- * Main screen for Popular movie app, it shows one pane and two pane UI's
+ * Main screen for Popular Movie app, it shows one pane and two pane UI's
  */
 
 public class MainActivity extends Activity implements MainFragment.OnMovieSelectedListener {
@@ -68,6 +68,7 @@ public class MainActivity extends Activity implements MainFragment.OnMovieSelect
                 startActivity(intent);
                 return true;
             }
+
         }
 
         return super.onOptionsItemSelected(item);

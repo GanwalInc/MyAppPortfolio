@@ -3,6 +3,9 @@ package com.ganwal.nanodegree.popularMovie;
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -11,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
+import com.ganwal.nanodegree.popularMovie.data.ProviderContract;
 import com.squareup.picasso.Picasso;
 import org.json.JSONException;
 
@@ -21,6 +25,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -81,18 +86,50 @@ public class MainFragment extends Fragment {
         //first make sure we have the api_key defined in the string resource file
         String apiKey = getString(R.string.api_key);
         if(HelperUtility.isStringNullOREmpty(apiKey)) {
-            Log.e(LOG_TAG, "***** ERROR - No API key found. Define api_key in string resource file ***");
+            Log.e(LOG_TAG, "***** ERROR - No API author found. Define api_key in string resource file ***");
         } else {
             String sortOrderValue = prefs.getString("pref_sort_order",  HelperUtility.MOVIES_POPULARITY_SORT_ORDER_VALUE);
-            String sortByQueryParam = sortOrderValue.equalsIgnoreCase(HelperUtility.MOVIES_RATINGS_SORT_ORDER_VALUE) ?
-                    HelperUtility.MOVIES_RATINGS_SORT_ORDER: HelperUtility.MOVIES_POPULARITY_SORT_ORDER;
-            String urlStr = new String(HelperUtility.MOVIE_DB_URL)
-                    .replaceAll(":1", sortByQueryParam)
-                    .replaceAll(":2", getString(R.string.api_key));
-            FetchMoviesTask fetchMoviesTask = new FetchMoviesTask();
-            fetchMoviesTask.execute(urlStr);
-
+            Log.d(LOG_TAG, "Sort Order pref:"+sortOrderValue);
+            if(sortOrderValue.equalsIgnoreCase(HelperUtility.MOVIES_FAVORITES_SORT_ORDER_VALUE)) {
+                //get the list of popular movies from local db
+                setmMovies(fetchLocalMovies());
+                if(getmMovies() != null && movieImageAdapter != null) {
+                    movieImageAdapter.notifyDataSetChanged();
+                }
+                Log.d(LOG_TAG, "Setting list of movies to:"+mMovies);
+            } else {
+                String sortByQueryParam = sortOrderValue.equalsIgnoreCase(HelperUtility.MOVIES_RATINGS_SORT_ORDER_VALUE) ?
+                        HelperUtility.MOVIES_RATINGS_SORT_ORDER : HelperUtility.MOVIES_POPULARITY_SORT_ORDER;
+                String urlStr = new String(HelperUtility.MOVIE_DB_DISCOVER_URL)
+                        .replaceAll(":1", sortByQueryParam)
+                        .replaceAll(":2", getString(R.string.api_key));
+                FetchMoviesTask fetchMoviesTask = new FetchMoviesTask();
+                fetchMoviesTask.execute(urlStr);
+            }
         }
+    }
+
+
+    private List<Movie> fetchLocalMovies() {
+        List<Movie> movieList = null;
+        final Cursor cursor = getActivity().getContentResolver().query(
+                ProviderContract.MovieEntry.CONTENT_URI,
+                ProviderContract.MovieEntry.projections,
+                null,
+                null,
+                null);
+        if (cursor != null && cursor.getCount() > 0) {
+            movieList = new ArrayList<Movie>();
+            cursor.moveToFirst();
+            while (!cursor.isAfterLast()) {
+                Movie favMovie = ProviderContract.MovieEntry.cursorToMovie(cursor);
+                Log.d(LOG_TAG, "Local Favorite Movie:"+favMovie);
+                movieList.add(favMovie);
+                cursor.moveToNext();
+            }
+            cursor.close();
+        }
+        return movieList;
     }
 
     public List<Movie> getmMovies() {
@@ -137,10 +174,23 @@ public class MainFragment extends Fragment {
                         inflate(R.layout.movie_item_view, null);
             }
             imageView = (ImageView) convertView;
-            //use Picasso library to load images
-            Picasso.with(mActivity)
-                    .load(HelperUtility.buildPosterImageURL(getmMovies().get(position).getThumbnailName()))
-                    .into(imageView);
+            //if the sort order is favorite, get the image from local db
+            if(PreferenceManager.getDefaultSharedPreferences(getActivity()).getString("pref_sort_order",
+                    HelperUtility.MOVIES_POPULARITY_SORT_ORDER_VALUE).equalsIgnoreCase(
+                    HelperUtility.MOVIES_FAVORITES_SORT_ORDER_VALUE)) {
+                Log.d(LOG_TAG, "Loading image from local DB");
+                byte[] image = getmMovies().get(position).getThumbnailImage();
+                if(image != null) {
+                    Bitmap bm = BitmapFactory.decodeByteArray(image, 0, image.length);
+                    imageView.setImageBitmap(bm);
+                }
+            } else {
+                Log.d(LOG_TAG, "Loading image from uri");
+                //use Picasso library to load images
+                Picasso.with(mActivity)
+                        .load(HelperUtility.buildPosterImageURL(getmMovies().get(position).getThumbnailName()))
+                        .into(imageView);
+            }
             return imageView;
         }
 

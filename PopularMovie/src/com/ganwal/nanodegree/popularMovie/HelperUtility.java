@@ -9,19 +9,24 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
- * As name says, helper class for most commonly used functionality that doesn't belong in  activities or fragments
+ * As content says, helper class for most commonly used functionality that doesn't belong in  activities or fragments
  */
 
 public class HelperUtility {
 
     private static final String LOG_TAG = HelperUtility.class.getSimpleName();
-    public static final String MOVIE_DB_URL = "http://api.themoviedb.org/3/discover/movie?sort_by=:1&api_key=:2";
+    public static final String MOVIE_DB_DISCOVER_URL = "http://api.themoviedb.org/3/discover/movie?sort_by=:1&api_key=:2";
     public static final String MOVIES_POPULARITY_SORT_ORDER = "popularity.desc";
     public static final String MOVIES_RATINGS_SORT_ORDER = "vote_average.desc";
     public static final String MOVIES_POPULARITY_SORT_ORDER_VALUE = "1";
     public static final String MOVIES_RATINGS_SORT_ORDER_VALUE = "2";
+    public static final String MOVIES_FAVORITES_SORT_ORDER_VALUE = "3";
     public static final String MOVIE_API_IMAGE_BASE_URL = "http://image.tmdb.org/t/p/";
     public static final String DEFAULT_IMAGE_SIZE = "w185";
+    public static final String MOVIE_DB_MOVIE_VIDEO_URL = "http://api.themoviedb.org/3/movie/:1/videos?api_key=:2";
+    public static final String MOVIE_DB_REVIEWS_VIDEO_URL = "http://api.themoviedb.org/3/movie/:1/reviews?api_key=:2";
+    public static final String YOU_TUBE_URL = "https://www.youtube.com/watch?v=:1";
+
 
     public static String imageSize = DEFAULT_IMAGE_SIZE;
 
@@ -37,7 +42,7 @@ public class HelperUtility {
 
     public static Date convertLongToDate(Long longDate){
         return (longDate != null
-                 && longDate.compareTo(Long.MIN_VALUE) != 0 ) ? new Date(longDate) : null;
+                && longDate.compareTo(Long.MIN_VALUE) != 0 ) ? new Date(longDate) : null;
     }
 
     public static Long convertDateToLong(Date date){
@@ -107,5 +112,22 @@ public class HelperUtility {
                 return default_size;
         }
     }
+
+    /**
+     * Some of the reviews are really long, so showing only 500 characters,
+     * user can use the link given in text to read more
+     * @param str
+     * @return
+     */
+    public static String getShortenedText(String str) {
+        StringBuffer sb = new StringBuffer();
+        int NUMBER_OF_CHARACTERS = 500;
+        int endIndex = str.length() < NUMBER_OF_CHARACTERS? str.length():NUMBER_OF_CHARACTERS;
+        sb.append(str.subSequence(0, endIndex));
+        sb.append("...");
+        return sb.toString();
+    }
+
+
 
 }

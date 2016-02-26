@@ -4,29 +4,44 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import java.util.Date;
+import java.util.List;
 
 public class Movie implements Parcelable {
 
-    String movieId;
+    int id; //sql lite database id
+    String movieDBId;
     String title;
     String thumbnailName;
     String synopsis;
     String userRating;
     Date releaseDate;
 
-    public Movie() { }
 
-    public Movie(String movieId, String title, String thumbnailName, String synopsis, String userRating, Date releaseDate) {
-        this.movieId = movieId;
+    //this field will mostly be empty, only used for storing movies in local db for using in offline mode
+    byte[] thumbnailImage;
+    List<MovieVideo> trailers;
+    List<MovieReview> reviews;
+
+    public Movie() {
+    }
+
+    public Movie(int id, String movieDBId, String title, String thumbnailName, String synopsis, String userRating,
+                 Date releaseDate, byte[] thumbnailImage, List<MovieVideo> trailers, List<MovieReview> reviews) {
+        this.id = id;
+        this.movieDBId = movieDBId;
         this.title = title;
         this.thumbnailName = thumbnailName;
         this.synopsis = synopsis;
         this.userRating = userRating;
         this.releaseDate = releaseDate;
+        this.thumbnailImage = thumbnailImage;
+        this.trailers = trailers;
+        this.reviews = reviews;
     }
 
     public Movie(Parcel in) {
-        this.movieId = in.readString();
+        this.id = in.readInt();
+        this.movieDBId = in.readString();
         this.title = in.readString();
         this.thumbnailName = in.readString();
         this.synopsis = in.readString();
@@ -34,44 +49,16 @@ public class Movie implements Parcelable {
         this.releaseDate = HelperUtility.convertLongToDate(in.readLong());
     }
 
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(movieId);
-        dest.writeString(title);
-        dest.writeString(thumbnailName);
-        dest.writeString(synopsis);
-        dest.writeString(userRating);
-        dest.writeLong(HelperUtility.convertDateToLong(releaseDate));
-    }
-
-    @Override
-    public int describeContents() {
-        return this.movieId.hashCode();
-    }
-
-    public static final Parcelable.Creator<Movie> CREATOR = new Parcelable.Creator<Movie>() {
-
-        @Override
-        public Movie createFromParcel(Parcel parcel) {
-            return new Movie(parcel);
-        }
-
-        @Override
-        public Movie[] newArray(int size) {
-            return new Movie[size];
-        }
-    };
-
-
-
-
     //getters and setters
-    public String getMovieId() {
-        return movieId;
+    public int getId() { return id; }
+
+    public void setId(int id) { this.id = id; }
+    public String getMovieDBId() {
+        return movieDBId;
     }
 
-    public void setMovieId(String movieId) {
-        this.movieId = movieId;
+    public void setMovieDBId(String movieDBId) {
+        this.movieDBId = movieDBId;
     }
 
     public String getTitle() {
@@ -114,15 +101,78 @@ public class Movie implements Parcelable {
         this.releaseDate = releaseDate;
     }
 
+    public byte[] getThumbnailImage() {
+        return thumbnailImage;
+    }
+
+    public void setThumbnailImage(byte[] thumbnailImage) {
+        this.thumbnailImage = thumbnailImage;
+    }
+
+
+    public List<MovieVideo> getTrailers() {
+        return trailers;
+    }
+
+    public void setTrailers(List<MovieVideo> trailers) {
+        this.trailers = trailers;
+    }
+
+    public List<MovieReview> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(List<MovieReview> reviews) {
+        this.reviews = reviews;
+    }
+
     @Override
     public String toString() {
         return "Movie{" +
-                "movieId='" + movieId + '\'' +
+                "id='" + id + '\'' +
+                ", movieDBId='" + movieDBId + '\'' +
                 ", title='" + title + '\'' +
                 ", thumbnailName='" + thumbnailName + '\'' +
                 ", synopsis='" + synopsis + '\'' +
                 ", userRating='" + userRating + '\'' +
-                ", releaseDate=" + releaseDate +
+                ", releaseDate=" + releaseDate + '\'' +
+                ", thumbnailImage=" + thumbnailImage + '\'' +
+                ", trailers=" + trailers + '\'' +
+                ", reviews=" + reviews+ '\'' +
                 '}';
     }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(id);
+        dest.writeString(movieDBId);
+        dest.writeString(title);
+        dest.writeString(thumbnailName);
+        dest.writeString(synopsis);
+        dest.writeString(userRating);
+        dest.writeLong(HelperUtility.convertDateToLong(releaseDate));
+        //should thumbnail image be parceled?
+        dest.writeList(trailers);
+        dest.writeList(reviews);
+    }
+
+    @Override
+    public int describeContents() {
+        return this.movieDBId.hashCode();
+    }
+
+    public static final Parcelable.Creator<Movie> CREATOR = new Parcelable.Creator<Movie>() {
+
+        @Override
+        public Movie createFromParcel(Parcel parcel) {
+            return new Movie(parcel);
+        }
+        @Override
+        public Movie[] newArray(int size) {
+            return new Movie[size];
+        }
+    };
+
 }
+
+
