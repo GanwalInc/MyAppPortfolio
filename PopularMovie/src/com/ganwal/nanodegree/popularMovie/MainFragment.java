@@ -33,14 +33,23 @@ public class MainFragment extends Fragment {
 
     private final String LOG_TAG = MainFragment.class.getSimpleName();
 
+    private final String MOVIES_ARRAY = "movies";
+    private final String SORT_ORDER_VALUE = "currentSortOrder";
+
     MovieImageAdapter movieImageAdapter = null;
 
     private List<Movie> mMovies;
 
     OnMovieSelectedListener mMovieSelectedListener;
 
+    private String mCurrentSortOrder;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        super.onCreateView(inflater, container, savedInstanceState);
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        String sortOrderValue = prefs.getString("pref_sort_order", HelperUtility.MOVIES_POPULARITY_SORT_ORDER_VALUE);
+        Log.d(LOG_TAG, "In  onCreateView sortOrderValue:" + sortOrderValue);
         movieImageAdapter = new MovieImageAdapter(getActivity());
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
         GridView gridView = (GridView) rootView.findViewById(R.id.movies_view);
@@ -57,15 +66,41 @@ public class MainFragment extends Fragment {
     }
 
     @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        Log.d(LOG_TAG, "Save existing state");
+        outState.putParcelableArrayList(MOVIES_ARRAY, (ArrayList<Movie>) mMovies);
+        outState.putString(SORT_ORDER_VALUE, mCurrentSortOrder);
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        //if state has not been saved
+        if(savedInstanceState == null || !savedInstanceState.containsKey(MOVIES_ARRAY)) {
+            Log.d(LOG_TAG, "In  onActivityCreated No saved state");
+            mCurrentSortOrder = PreferenceManager.getDefaultSharedPreferences(getActivity()).
+                    getString("pref_sort_order", HelperUtility.MOVIES_POPULARITY_SORT_ORDER_VALUE);
+            Log.d(LOG_TAG, "In  onActivityCreated Fetching movies");
+            fetchMovies();
+        } else { //found saved state, now use it so we don't have to reload objects from network
+            mCurrentSortOrder = savedInstanceState.getString(SORT_ORDER_VALUE, HelperUtility.MOVIES_POPULARITY_SORT_ORDER_VALUE);
+            Log.d(LOG_TAG, "In  onActivityCreated using movies from saved state");
+            mMovies = savedInstanceState.getParcelableArrayList(MOVIES_ARRAY);
+        }
+    }
+
+    @Override
     public void onStart() {
         super.onStart();
-        //find the screen size of device and set it in helper so we don't have to find it over and over
-        //it will be used to download images
-        HelperUtility.setImageSize(HelperUtility.findImageSize(this.getActivity()));
-        Log.d(LOG_TAG, "Image Size for poster images is :" + HelperUtility.getImageSize());
-        //calling fetch movies twice; in onAttach and onStart, for some reasons android emulators
-        // pre API level 21, are not showing the list of movies for the first time app is opened
-        fetchMovies();
+        String sortOrderValue = PreferenceManager.getDefaultSharedPreferences(getActivity())
+                .getString("pref_sort_order", HelperUtility.MOVIES_POPULARITY_SORT_ORDER_VALUE);
+        //if sort order changed, reload the movies list
+        if(mCurrentSortOrder == null || !mCurrentSortOrder.equalsIgnoreCase(sortOrderValue)) {
+            Log.d(LOG_TAG, "In  onActivityCreated Looks like sort order changed");
+            mCurrentSortOrder = sortOrderValue;
+            fetchMovies();
+        }
     }
 
     @Override
@@ -76,18 +111,20 @@ public class MainFragment extends Fragment {
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString() + " must implement OnMovieSelectedListener");
         }
-        fetchMovies();
 
     }
 
     private void fetchMovies() {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        //find the screen size of device and set it in helper so we don't have to find it over and over
+        //it will be used to download images
+        HelperUtility.setImageSize(HelperUtility.findImageSize(this.getActivity()));
 
         //first make sure we have the api_key defined in the string resource file
         String apiKey = getString(R.string.api_key);
         if(HelperUtility.isStringNullOREmpty(apiKey)) {
             Log.e(LOG_TAG, "***** ERROR - No API author found. Define api_key in string resource file ***");
         } else {
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
             String sortOrderValue = prefs.getString("pref_sort_order",  HelperUtility.MOVIES_POPULARITY_SORT_ORDER_VALUE);
             Log.d(LOG_TAG, "Sort Order pref:"+sortOrderValue);
             if(sortOrderValue.equalsIgnoreCase(HelperUtility.MOVIES_FAVORITES_SORT_ORDER_VALUE)) {
@@ -259,7 +296,10 @@ public class MainFragment extends Fragment {
         @Override
         protected void onPostExecute(List<Movie> movies) {
             setmMovies(movies);
+            movieImageAdapter.notifyDataSetChanged();
         }
+
+
 
         @Override
         protected void onProgressUpdate(Integer... resultSize) {
